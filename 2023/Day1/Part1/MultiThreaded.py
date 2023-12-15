@@ -11,20 +11,20 @@ with open(file_path, 'r') as file:
     lines = [line.rstrip('\n') for line in file]
 
 
-def process_line(x):
+def process_line(line):
     first = ""
     last = ""
     reverse = False
-    for s in x:
+    for c in line:
         # if (first.isdigit() and last.isdigit()):
         #     break
         # else:
         if True:
-            if (s.isdigit() and not first.isdigit()):
-                first = s
+            if (c.isdigit() and not first.isdigit()):
+                first = c
                 reverse = True
-            if (s.isdigit() and reverse):
-                last = s
+            if (c.isdigit() and reverse):
+                last = c
     if first+last != "":
         return int(first+last)
 
