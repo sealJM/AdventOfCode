@@ -2,7 +2,7 @@ import timeit
 import concurrent.futures
 
 # Specify the file path
-file_path = '2023\\Day1\\Part1\\input.txt'
+file_path = '2023\\Day1\\input.txt'
 global results
 
 # Open the file in read mode
