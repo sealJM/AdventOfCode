@@ -13,24 +13,7 @@ with open(file_path, 'r') as file:
 
 
 def process_line(line):
-    number_map = {
-        "one": "1", "two": "2", "three": "3",
-        "four": "4", "five": "5", "six": "6",
-        "seven": "7", "eight": "8", "nine": "9"
-    }
-
-    numbers = {}
-
-    for key in number_map.keys():
-        index = line.find(key)
-        while index != -1:
-            numbers[index] = number_map[key]
-            index = line.find(key, index + 1)
-
-    for i, x in enumerate(line):
-        if x.isdigit():
-            numbers[i] = x
-    return int(f"{numbers[min(numbers)]}{numbers[max(numbers)]}")
+    return line
 
 
 def run():
@@ -42,7 +25,7 @@ def run():
 
     # Single Thread
     for line in lines:
-        results = results + process_line(line)
+        results = process_line(line)
 
 
 if __name__ == "__main__":
