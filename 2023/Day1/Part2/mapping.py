@@ -1,17 +1,15 @@
 # import concurrent.futures
 import timeit
-import re
 
 
 # Specify the file path
 file_path = '2023\\Day1\\input.txt'
 
+
 # Open the file in read mode
 with open(file_path, 'r') as file:
     # Read lines and store them in a list
     lines = [line.rstrip('\n') for line in file]
-
-# lines = ["sevenseven7eightoneightvvj"]
 
 
 def process_line(line):
@@ -20,19 +18,20 @@ def process_line(line):
         "four": "4", "five": "5", "six": "6",
         "seven": "7", "eight": "8", "nine": "9"
     }
-    # TODO findall does not include overlapping words
-    # Find all matches of the number pattern in the string
-    word_pattern = r'one|two|three|four|five|six|seven|eight|nine'
-    digit_pattern = r'\d'
-    search = f'{word_pattern}|{digit_pattern}'
-    numbers = re.findall(search, line)
-    if numbers:
-        first = (number_map[numbers[0]] if numbers[0]
-                 in number_map else numbers[0])
-        last = (number_map[numbers[-1]] if numbers[-1]
-                in number_map else numbers[-1])
-        # print(int(first+last))
-        return int(first+last)
+
+    numbers = {}
+
+    for key in number_map.keys():
+        index = line.find(key)
+        # if index != -1:
+        while index != -1:
+            numbers[index] = number_map[key]
+            index = line.find(key, index + 1)
+
+    for i, x in enumerate(line):
+        if x.isdigit():
+            numbers[i] = x
+    return int(f"{numbers[min(numbers)]}{numbers[max(numbers)]}")
 
 
 def run():
@@ -44,11 +43,10 @@ def run():
 
     # Single Thread
     for line in lines:
-        # process_line(line)
         results = results + process_line(line)
 
 
 if __name__ == "__main__":
-    execution_time = (timeit.timeit(run, number=1))/1
+    execution_time = (timeit.timeit(run, number=1000))/1000
     print(results)
     print(f"Execution time: {execution_time} seconds")
