@@ -14,13 +14,13 @@ with open(file_path, 'r') as file:
 
 
 def process_line(line):
-    rule = {"red": 0, "green": 0, "blue": 0}
+    minimum = {"red": 0, "green": 0, "blue": 0}
     line = ", ".join(line.split(": ")[1].split("; ")).split(", ")
     for i in line:
         quantity, color = i.split(" ")
-        if int(quantity) > rule[color]:
-            rule[color] = int(quantity)
-    return reduce(lambda x, y: x * y, rule.values())
+        if int(quantity) > minimum[color]:
+            minimum[color] = int(quantity)
+    return reduce(lambda x, y: x * y, minimum.values())
 
 
 def run():
