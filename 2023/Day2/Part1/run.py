@@ -13,7 +13,14 @@ with open(file_path, 'r') as file:
 
 
 def process_line(line):
-    return line
+    rule = {"red": 12, "green": 13, "blue": 14}
+    game = int(line.split(": ")[0].split(" ")[1])
+    line = ", ".join(line.split(": ")[1].split("; ")).split(", ")
+    for i in line:
+        quantity, color = i.split(" ")
+        if int(quantity) > rule[color]:
+            return 0
+    return game
 
 
 def run():
@@ -25,7 +32,8 @@ def run():
 
     # Single Thread
     for line in lines:
-        results = process_line(line)
+        # process_line(line)
+        results = results + process_line(line)
 
 
 if __name__ == "__main__":
