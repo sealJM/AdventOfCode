@@ -19,8 +19,8 @@ def process_line(line):
         if i in winners.split():
             wins += 1
     if wins >= 0:
+        # Bit shift to double result
         return int(1 << wins)
-    # print(f"{winners.split()} and {numbers.split()}")
     else:
         return 0
 
@@ -28,13 +28,8 @@ def process_line(line):
 def run():
     global results
     results = 0
-    # Multithreading
-    # with concurrent.futures.ThreadPoolExecutor() as executor:
-    #     results = sum(executor.map(process_line, lines))
 
-    # Single Thread
     for line in lines:
-        # process_line(line)
         results = results + process_line(line)
 
 
