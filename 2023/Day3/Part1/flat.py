@@ -16,7 +16,7 @@ with open(file_path, 'r') as file:
 
 def scan(index):
     line = index // length
-    results = []
+    numbers = []
     # Welcome to spaghetti hell
     for x in range(-1, 2):
         i = index+(length*x)
@@ -27,9 +27,9 @@ def scan(index):
             back += 1
         while lines[i+ahead].isdigit() and (i+ahead) < (x+length):
             ahead += 1
-        results.append(lines[i-back+1:i+ahead])
-    results = sum(int(num) for num in re.findall(r'\d+', ",".join(results)))
-    return results
+        numbers.append(lines[i-back+1:i+ahead])
+    numbers = sum(int(num) for num in re.findall(r'\d+', ",".join(numbers)))
+    return numbers
 
 
 def run():
