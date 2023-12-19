@@ -15,7 +15,7 @@ with open(file_path, 'r') as file:
 def process_line(index=0, end=len(lines)):
     global results
     global lines
-    # This attempt was just for fun and doesn't work for now
+    # This attempt was just for fun and is slightly off
     # It's also REALLY slow
     for i in range(index, end):
         wins = 0
