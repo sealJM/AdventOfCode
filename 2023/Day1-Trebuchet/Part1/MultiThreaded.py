@@ -1,8 +1,8 @@
 import timeit
-
+import concurrent.futures
 
 # Specify the file path
-file_path = '2023\\Day1\\input.txt'
+file_path = '2023\\Day1-Trebuchet\\input.txt'
 
 
 # Open the file in read mode
@@ -31,9 +31,8 @@ def process_line(line):
 
 def run():
     global results
-    results = 0
-    for line in lines:
-        results = results + process_line(line)
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        results = sum(executor.map(process_line, lines))
 
 
 if __name__ == "__main__":

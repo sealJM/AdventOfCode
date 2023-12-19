@@ -1,10 +1,10 @@
 # import concurrent.futures
 import timeit
-from functools import reduce
+import re
 
 
 # Specify the file path
-file_path = '2023\\Day2\\input.txt'
+file_path = '2023\\Day1-Trebuchet\\input.txt'
 
 
 # Open the file in read mode
@@ -14,25 +14,22 @@ with open(file_path, 'r') as file:
 
 
 def process_line(line):
-    minimum = {"red": 0, "green": 0, "blue": 0}
-    line = ", ".join(line.split(": ")[1].split("; ")).split(", ")
-    for i in line:
-        quantity, color = i.split(" ")
-        if int(quantity) > minimum[color]:
-            minimum[color] = int(quantity)
-    return reduce(lambda x, y: x * y, minimum.values())
+    # Find all matches of the number pattern in the string
+    numbers = re.findall(r'\d', line)
+    if numbers:
+        return int(numbers[0] + numbers[-1])
 
 
 def run():
     global results
     results = 0
+
     # Multithreading
     # with concurrent.futures.ThreadPoolExecutor() as executor:
     #     results = sum(executor.map(process_line, lines))
 
     # Single Thread
     for line in lines:
-        # process_line(line)
         results = results + process_line(line)
 
 

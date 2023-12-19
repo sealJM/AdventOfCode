@@ -3,7 +3,7 @@ import timeit
 
 
 # Specify the file path
-file_path = '2023\\Day1\\input.txt'
+file_path = '2023\\Day1-Trebuchet\\input.txt'
 
 
 # Open the file in read mode

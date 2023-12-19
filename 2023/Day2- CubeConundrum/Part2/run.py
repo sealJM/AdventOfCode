@@ -1,9 +1,10 @@
 # import concurrent.futures
 import timeit
+from functools import reduce
 
 
 # Specify the file path
-file_path = '2023\\Day2\\input.txt'
+file_path = '2023\\Day2- CubeConundrum\\input.txt'
 
 
 # Open the file in read mode
@@ -13,14 +14,13 @@ with open(file_path, 'r') as file:
 
 
 def process_line(line):
-    rule = {"red": 12, "green": 13, "blue": 14}
-    game = int(line.split(": ")[0].split(" ")[1])
+    minimum = {"red": 0, "green": 0, "blue": 0}
     line = ", ".join(line.split(": ")[1].split("; ")).split(", ")
     for i in line:
         quantity, color = i.split(" ")
-        if int(quantity) > rule[color]:
-            return 0
-    return game
+        if int(quantity) > minimum[color]:
+            minimum[color] = int(quantity)
+    return reduce(lambda x, y: x * y, minimum.values())
 
 
 def run():

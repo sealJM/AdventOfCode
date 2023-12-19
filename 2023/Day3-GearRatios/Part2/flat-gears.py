@@ -4,7 +4,7 @@ import re
 
 
 # Specify the file path
-file_path = '2023\\Day3\\input.txt'
+file_path = '2023\\Day3-GearRatios\\input.txt'
 
 
 # Open the file in read mode and flatten to one string
