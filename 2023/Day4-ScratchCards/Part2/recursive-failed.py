@@ -1,7 +1,7 @@
 # import concurrent.futures
 import timeit
 # Specify the file path
-file_path = '2023\\Day4\\input.txt'
+file_path = '2023\\Day4-ScratchCards\\input.txt'
 
 
 # Open the file in read mode
