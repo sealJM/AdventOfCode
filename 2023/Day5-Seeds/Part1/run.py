@@ -11,7 +11,7 @@ def process_deltas(line):
     return line
 
 
-def process_seed(lines, seed, level):
+def process_seed(lines, seed, level=1):
     # Using recursion, process seeds found
     max = 7
     for i in lines[level]:
@@ -42,11 +42,11 @@ def run():
                 lines[i] = x.split(":\n")[1].split("\n")
 
     # Single Thread
-    for i, line in enumerate(lines[1::], start=1):
+    for i, line in enumerate(lines[1::], 1):
         lines[i] = process_deltas(line)
 
     for seed in lines[0].split(" "):
-        results.append(process_seed(lines, int(seed), 1))
+        results.append(process_seed(lines, int(seed)))
     results = min(results)
 
 
