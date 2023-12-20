@@ -1,32 +1,50 @@
 import timeit
 
-# TODO Create seeds based off the available ranges and then check all the seeds
-# TODO Or even better work backwards from lowest possible coordinate
+
+def process_deltas(line, index):
+    if index != 0:
+        # Pre process deltas to reduce calculations needed
+        for i, info in enumerate(line):
+            delta, s_range, e_range = info.split(" ")
+            delta, s_range, e_range = int(delta), int(s_range), int(e_range)
+            delta, e_range = delta-s_range, s_range+e_range
+            line[i] = [delta, s_range, e_range]
+        return line
+    else:
+        line = list(zip(line.split(" ")[::2], line.split(" ")[1::2]))
+        for i, x in enumerate(line):
+            line[i] = [int(x[0]), int(x[0]) + int(x[1])]
+        return line
 
 
-def process_deltas(line):
-    # Pre process deltas to reduce calculations needed
-    for i, info in enumerate(line):
-        delta, s_range, e_range = info.split(" ")
-        delta, s_range, e_range = int(delta), int(s_range), int(e_range)
-        delta, e_range = delta-s_range, s_range+e_range
-        line[i] = [delta, s_range, e_range]
-    return line
+def process_ranges(ranges, seeds):
+    # This works but I don't think it should
+    new_seeds = []
+    for i in seeds:
+        nothing = True
+        for scope in ranges:
+            # Fits in between [...(...)...]
+            if scope[1] <= i[0] and i[1] <= scope[2]:
+                new_seeds.append([i[0]+scope[0], i[1]+scope[0]])
+                nothing = False
+            # Hanging left (...[...)...]
+            elif scope[1] >= i[0] and i[1] >= scope[1]:
+                new_seeds.append([scope[1]+scope[0], i[1]+scope[0]])
+                nothing = False
+            # Hanging right [...(...]...)
+            elif scope[2] >= i[0] and i[1] >= scope[2]:
+                new_seeds.append([i[0]+scope[0], scope[2]+scope[0]])
+                nothing = False
+            # Overhanging (...[...]...)
+            elif scope[1] >= i[0] and i[1] >= scope[2]:
+                new_seeds.append([i[0], scope[1]-1])
+                new_seeds.append([scope[1]+scope[0], scope[1]+scope[0]])
+                new_seeds.append([scope[2]+1, i[1]])
+                nothing = False
+        if nothing:
+            new_seeds.append([i[0], i[1]])
 
-
-def process_seed(lines, seed, level=1):
-    # Using recursion, process seeds found
-    max = 7
-    for i in lines[level]:
-        if seed >= i[1] and seed <= i[2]:
-            location = seed+i[0]
-            if level < max:
-                location = process_seed(lines, seed+i[0], level+1)
-            return location
-    location = seed
-    if level < max:
-        location = process_seed(lines, seed, level+1)
-    return location
+    return new_seeds
 
 
 def run():
@@ -44,16 +62,15 @@ def run():
             else:
                 lines[i] = x.split(":\n")[1].split("\n")
 
-    # Single Thread
-    for i, line in enumerate(lines[1::], 1):
-        lines[i] = process_deltas(line)
+    for i, line in enumerate(lines):
+        lines[i] = process_deltas(line, i)
 
-    for seed in lines[0].split(" "):
-        results.append(process_seed(lines, int(seed)))
-    results = min(results)
+    for i in lines[1::]:
+        lines[0] = process_ranges(i, lines[0])
+    results = min(sublist[0] for sublist in lines[0])
 
 
 if __name__ == "__main__":
-    execution_time = (timeit.timeit(run, number=1000))/1000
+    execution_time = (timeit.timeit(run, number=1))/1
     print(results)
     print(f"Execution time: {execution_time} seconds")
