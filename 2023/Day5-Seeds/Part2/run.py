@@ -18,7 +18,7 @@ def process_deltas(line, index):
 
 
 def process_ranges(ranges, seeds):
-    # This works but I don't think it should
+    # Processes ranges at a time and will split them if needed
     new_seeds = []
     for i in seeds:
         nothing = True
@@ -27,19 +27,25 @@ def process_ranges(ranges, seeds):
             if scope[1] <= i[0] and i[1] <= scope[2]:
                 new_seeds.append([i[0]+scope[0], i[1]+scope[0]])
                 nothing = False
+            # Overhanging (...[...]...)
+            elif scope[1] >= i[0] and i[1] >= scope[2]:
+                if [i[0], scope[1]-1] not in seeds:
+                    seeds.append([i[0], scope[1]-1])
+                if [scope[2]+1, i[1]] not in seeds:
+                    seeds.append([scope[2]+1, i[1]])
+                new_seeds.append([scope[1]+scope[0], scope[1]+scope[0]])
+                nothing = False
             # Hanging left (...[...)...]
             elif scope[1] >= i[0] and i[1] >= scope[1]:
+                if [i[0], scope[1]-1] not in seeds:
+                    seeds.append([i[0], scope[1]-1])
                 new_seeds.append([scope[1]+scope[0], i[1]+scope[0]])
                 nothing = False
             # Hanging right [...(...]...)
             elif scope[2] >= i[0] and i[1] >= scope[2]:
+                if [scope[2]+1, i[1]] not in seeds:
+                    seeds.append([scope[2]+1, i[1]])
                 new_seeds.append([i[0]+scope[0], scope[2]+scope[0]])
-                nothing = False
-            # Overhanging (...[...]...)
-            elif scope[1] >= i[0] and i[1] >= scope[2]:
-                new_seeds.append([i[0], scope[1]-1])
-                new_seeds.append([scope[1]+scope[0], scope[1]+scope[0]])
-                new_seeds.append([scope[2]+1, i[1]])
                 nothing = False
         if nothing:
             new_seeds.append([i[0], i[1]])
@@ -71,6 +77,6 @@ def run():
 
 
 if __name__ == "__main__":
-    execution_time = (timeit.timeit(run, number=1))/1
+    execution_time = (timeit.timeit(run, number=1000))/1000
     print(results)
     print(f"Execution time: {execution_time} seconds")
