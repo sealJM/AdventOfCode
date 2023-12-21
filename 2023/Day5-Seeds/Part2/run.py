@@ -61,7 +61,7 @@ def run():
     # Open the file in read mode
     with open(file_path, 'r') as file:
         # Read lines and store them in a list
-        lines = file.read().split("\n\n")
+        lines = file.read()[:-1].split("\n\n")
         for i, x in enumerate(lines):
             if i == 0:
                 lines[i] = x.split(": ")[1]
