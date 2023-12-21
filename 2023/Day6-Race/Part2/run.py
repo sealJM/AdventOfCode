@@ -5,7 +5,7 @@ import cmath
 
 def process_line(time, distance):
     # This problem deals with pure ints and no rounding
-    # Highschool quadratics payed off finally
+    # Highschool quadratics paid off finally
     discriminant = cmath.sqrt(time**2 - 4*distance)
     root1 = ((time + discriminant) / (2))
     root2 = ((time - discriminant) / (2))
