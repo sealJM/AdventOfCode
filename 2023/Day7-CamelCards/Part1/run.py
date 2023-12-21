@@ -8,23 +8,51 @@ def process_line(line):
         "Q": 12, "K": 13, "A": 14
     }
     hand, bet = line.split()
-    char_count = {}
-    pairs = 0
     cards = []
+
     for char in hand:
         cards.append(power[char])
-        char_count[char] = char_count.get(char, 0) + 1
-    for i in char_count:
-        if char_count[i] == 2:
-            pairs += 1
-        elif char_count[i] == 3:
-            pairs += 3
-        elif char_count[i] == 4:
-            pairs += 5
-        elif char_count[i] == 5:
-            pairs += 6
+    char_count = len(set(hand))
+    if char_count == 1:
+        pairs = 6
+    elif char_count == 2:
+        for i in set(hand):
+            if hand.count(i) > 3:
+                pairs = 5
+                break
+            else:
+                pairs = 4
+    elif char_count == 3:
+        for i in set(hand):
+            if hand.count(i) > 2:
+                pairs = 3
+                break
+            else:
+                pairs = 2
+    elif char_count == 4:
+        pairs = 1
+    elif char_count == 5:
+        pairs = 0
+
     power = [pairs] + cards
     return [power, bet]
+
+    # Old way used a loop in spots when not needed
+    # char_count = {}
+    # pairs = 0
+    # cards = []
+    # for char in hand:
+    #     cards.append(power[char])
+    #     char_count[char] = char_count.get(char, 0) + 1
+    # for i in char_count:
+    #     if char_count[i] == 2:
+    #         pairs += 1
+    #     elif char_count[i] == 3:
+    #         pairs += 3
+    #     elif char_count[i] == 4:
+    #         pairs += 5
+    #     elif char_count[i] == 5:
+    #         pairs += 6
 
 
 def run():
