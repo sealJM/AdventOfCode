@@ -20,35 +20,35 @@ def process_deltas(line, index):
 def process_ranges(ranges, seeds):
     # Processes ranges at a time and will split them if needed
     new_seeds = []
-    for i in seeds:
+    for i0, i1 in seeds:
         nothing = True
-        for scope in ranges:
+        for x0, x1, x2 in ranges:
             # Fits in between [...(...)...]
-            if scope[1] <= i[0] and i[1] <= scope[2]:
-                new_seeds.append([i[0]+scope[0], i[1]+scope[0]])
+            if x1 <= i0 and i1 <= x2:
+                new_seeds.append([i0+x0, i1+x0])
                 nothing = False
             # Overhanging (...[...]...)
-            elif scope[1] >= i[0] and i[1] >= scope[2]:
-                if [i[0], scope[1]-1] not in seeds:
-                    seeds.append([i[0], scope[1]-1])
-                if [scope[2]+1, i[1]] not in seeds:
-                    seeds.append([scope[2]+1, i[1]])
-                new_seeds.append([scope[1]+scope[0], scope[1]+scope[0]])
+            elif x1 >= i0 and i1 >= x2:
+                if [i0, x1-1] not in seeds:
+                    seeds.append([i0, x1-1])
+                if [x2+1, i1] not in seeds:
+                    seeds.append([x2+1, i1])
+                new_seeds.append([x1+x0, x1+x0])
                 nothing = False
             # Hanging left (...[...)...]
-            elif scope[1] >= i[0] and i[1] >= scope[1]:
-                if [i[0], scope[1]-1] not in seeds:
-                    seeds.append([i[0], scope[1]-1])
-                new_seeds.append([scope[1]+scope[0], i[1]+scope[0]])
+            elif x1 >= i0 and i1 >= x1:
+                if [i0, x1-1] not in seeds:
+                    seeds.append([i0, x1-1])
+                new_seeds.append([x1+x0, i1+x0])
                 nothing = False
             # Hanging right [...(...]...)
-            elif scope[2] >= i[0] and i[1] >= scope[2]:
-                if [scope[2]+1, i[1]] not in seeds:
-                    seeds.append([scope[2]+1, i[1]])
-                new_seeds.append([i[0]+scope[0], scope[2]+scope[0]])
+            elif x2 >= i0 and i1 >= x2:
+                if [x2+1, i1] not in seeds:
+                    seeds.append([x2+1, i1])
+                new_seeds.append([i0+x0, x2+x0])
                 nothing = False
         if nothing:
-            new_seeds.append([i[0], i[1]])
+            new_seeds.append([i0, i1])
 
     return new_seeds
 
