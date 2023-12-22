@@ -2,6 +2,7 @@ import timeit
 
 
 def process_line(line):
+    # Will take the hand and convert it to a power value
     power = {
         "2": 2, "3": 3, "4": 4, "5": 5, "6": 6,
         "7": 7, "8": 8, "9": 9, "T": 10, "J": 11,
@@ -11,7 +12,7 @@ def process_line(line):
     hand, bet = line.split()
     hand = [power[i] for i in hand]
     char_count = len(set(hand))
-
+    # Length and uniques are used to find power value
     if char_count == 1:
         pairs = 6
     elif char_count == 2:
@@ -69,6 +70,8 @@ def run():
 
     for line in lines:
         results.append(process_line(line))
+
+    # Sorts the results based on the list containing power
     results = sorted(results, key=lambda x: x[0])
     for i, rank in enumerate(results):
         total += int(rank[1])*(i+1)
