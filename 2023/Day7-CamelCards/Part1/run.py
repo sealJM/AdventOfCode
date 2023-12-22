@@ -7,12 +7,11 @@ def process_line(line):
         "7": 7, "8": 8, "9": 9, "T": 10, "J": 11,
         "Q": 12, "K": 13, "A": 14
     }
-    hand, bet = line.split()
-    cards = []
 
-    for char in hand:
-        cards.append(power[char])
+    hand, bet = line.split()
+    hand = [power[i] for i in hand]
     char_count = len(set(hand))
+
     if char_count == 1:
         pairs = 6
     elif char_count == 2:
@@ -34,7 +33,7 @@ def process_line(line):
     elif char_count == 5:
         pairs = 0
 
-    power = [pairs] + cards
+    power = [pairs] + hand
     return [power, bet]
 
     # Old way used a loop in spots when not needed
