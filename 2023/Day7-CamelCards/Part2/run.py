@@ -46,12 +46,14 @@ def process_j(hand, power):
     char_count = {}
     pairs = 0
     cards = []
+    # Convert cards to power values and count cards
     for char in hand:
         cards.append(power[char])
         char_count[char] = char_count.get(char, 0) + 1
-    max(char_count, key=char_count.get)
+    # Return number of J cards and remove from set
     j = char_count.pop("J")
     if char_count:
+        #  Add number of J cards to highest set found
         char_count[max(char_count, key=char_count.get)] += j
         for i in char_count:
             if char_count[i] == 2:
@@ -63,6 +65,7 @@ def process_j(hand, power):
             elif char_count[i] == 5:
                 pairs += 6
     else:
+        # If all cards are J
         pairs = 6
     return [pairs]+cards
 
